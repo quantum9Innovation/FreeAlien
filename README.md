@@ -94,6 +94,33 @@ permissions and recovery.
 
 </details>
 
+### NixOS flake
+
+FreeAlien also ships a native Nix package and NixOS module. The module installs
+the desktop application and CLI, grants the active local session access to the
+two lighting controllers, and can apply a declarative per-key profile at login.
+
+```nix
+{
+  inputs.freealien.url = "github:JafarAkhondali/FreeAlien";
+  inputs.freealien.inputs.nixpkgs.follows = "nixpkgs";
+
+  outputs = { nixpkgs, freealien, ... }: {
+    nixosConfigurations.my-alienware = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        freealien.nixosModules.default
+        { hardware.freealien.enable = true; }
+      ];
+    };
+  };
+}
+```
+
+After rebuilding and logging back in, run `freealien status` or launch
+`freealien gui`. See the [NixOS guide](docs/nixos.md) for declarative profiles,
+flake apps, persistence, and development commands.
+
 ## Compatibility
 
 Developed and tested on the **Alienware m16 R2**. Other models may work if they

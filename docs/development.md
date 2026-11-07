@@ -36,6 +36,16 @@ python3 -m pytest tests/test_against_captures.py -q
 python3 dev/tools/verify_grid.py --numeric
 ```
 
+On NixOS, the flake supplies the development dependencies and runs the same test
+suite in a sandbox:
+
+```bash
+nix develop
+nix flake check
+nix build
+nix fmt
+```
+
 `pytest.ini` restricts discovery to `tests/`, excludes fixtures/development trees,
 and supplies the repository import path. `tests/conftest.py` defaults Qt to its
 offscreen backend. Tests mock hardware and privileged setup; they do not install
